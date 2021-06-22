@@ -1,5 +1,8 @@
+import pygame
+
 class GameObject:
-    def __init__(self, x, y, sx, sy, r):
+    def __init__(self, sprite, x, y, sx, sy, r):
+        self.sprite
         self.x = x
         self.y = y
         self.sx = sx
@@ -7,3 +10,6 @@ class GameObject:
         self.r = r
     def __repr__(self):
         return f"x : {self.x}, y : {self.y}, scale(x) : {self.sx}, scale(y) : {self.sy}, rotation : {self.r}"
+    
+    def get_drawable(self):
+        return pygame.image.load(self.sprite)
