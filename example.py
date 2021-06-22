@@ -1,4 +1,4 @@
-import engine
+from Engine import engine
 
 @engine.update
 def late_update(rate):
