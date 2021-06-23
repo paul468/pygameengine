@@ -16,6 +16,17 @@ def exit_func(func):
 
 rate = 1/60
 
+class Component(object):
+
+    def __init__(self, parent):
+        self.parent = parent
+    
+    def update(self, rate):
+        pass
+
+    def start(self):
+        pass
+
 def delete_default_update():
     for i in updates:
         if i.__name__ == "updoot":
@@ -41,7 +52,8 @@ def new_object(path_to_sprite, x,y,sx,sy,r):
 
 @update
 def updoot(rate):
-    print(rate)
+    for i in render_queue:
+        i[0].update(rate)
 
 @exit_func
 def leave():
@@ -50,7 +62,8 @@ pygame.init()
 
 
 def main():
-    
+    for i in render_queue:
+        i[0].start()
     while True:
         root["r"].fill((root["c"]))
         for event in pygame.event.get():
@@ -58,7 +71,7 @@ def main():
                 for i in exits:
                     i()
         for i in render_queue:
-            root["r"].blit(i[0], i[0].get_rect())
+            root["r"].blit(i[0], i[0].get_rect().move(i[1],i[2]))
         for i in updates:
             i(rate)
         
