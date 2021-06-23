@@ -1,5 +1,5 @@
 import pygame, sys
-import Engine.GameObject
+from Engine.GameObject import GameObject
 
 updates = []
 exits = []
@@ -25,9 +25,19 @@ def set_fps(fps):
 
 clock = pygame.time.Clock()
 
-def new_win(width, height, win):
+def new_win(width, height, win, col):
     win = pygame.display.set_mode((width, height))
     root["r"] = win
+    root["c"] = col
+
+def add_gameobject(go:GameObject):
+    render_queue.append([go.get_drawable(), go.x, go.y, go.sx, go.sy, go.r]) 
+
+
+def new_object(path_to_sprite, x,y,sx,sy,r):
+    new = GameObject(path_to_sprite, x, y, sx, sy, r)
+    add_gameobject(new)
+    return new
 
 @update
 def updoot(rate):
@@ -38,19 +48,17 @@ def leave():
     sys.exit()
 pygame.init()
 
-def add_gameobject(go:Engine.GameObject.GameObject):
-    render_queue.append([go.get_drawable(), go.x, go.y, go.sx, go.sy, go.r])
 
 def main():
     
     while True:
-        root["r"].fill()
+        root["r"].fill((root["c"]))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 for i in exits:
                     i()
         for i in render_queue:
-            root.blit(i)
+            root["r"].blit(i[0], i[0].get_rect())
         for i in updates:
             i(rate)
         

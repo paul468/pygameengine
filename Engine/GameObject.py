@@ -1,8 +1,9 @@
 import pygame
 
 class GameObject:
+    compontents = []
     def __init__(self, sprite, x, y, sx, sy, r):
-        self.sprite
+        self.sprite = sprite
         self.x = x
         self.y = y
         self.sx = sx
@@ -13,3 +14,6 @@ class GameObject:
     
     def get_drawable(self):
         return pygame.image.load(self.sprite)
+    
+    def addComponent(comp):
+        components.append()
