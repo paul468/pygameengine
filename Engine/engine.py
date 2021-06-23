@@ -3,9 +3,8 @@ from Engine.GameObject import GameObject
 
 updates = []
 exits = []
-render_queue = []
 root = {}
-
+gameobjects = []
 path = sys.path[0]
 print(path)
 def update(func):
@@ -42,7 +41,7 @@ def new_win(width, height, win, col):
     root["c"] = col
 
 def add_gameobject(go:GameObject):
-    render_queue.append([go.get_drawable(), go.x, go.y, go.sx, go.sy, go.r]) 
+    gameobjects.append(go)
 
 
 def new_object(path_to_sprite, x,y,sx,sy,r):
@@ -52,8 +51,8 @@ def new_object(path_to_sprite, x,y,sx,sy,r):
 
 @update
 def updoot(rate):
-    for i in render_queue:
-        i[0].update(rate)
+    for i in gameobjects:
+        i.update(rate)
 
 @exit_func
 def leave():
@@ -62,16 +61,16 @@ pygame.init()
 
 
 def main():
-    for i in render_queue:
-        i[0].start()
+    for i in gameobjects:
+        i.start()
     while True:
         root["r"].fill((root["c"]))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 for i in exits:
                     i()
-        for i in render_queue:
-            root["r"].blit(i[0], i[0].get_rect().move(i[1],i[2]))
+        for i in gameobjects:
+            root["r"].blit(i.get_drawable(), i.get_drawable().get_rect().move(i.x,i.y))
         for i in updates:
             i(rate)
         
